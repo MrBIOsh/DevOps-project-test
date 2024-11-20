@@ -1,0 +1,49 @@
+version: '3.8'
+
+#networks:
+#  private_network:
+#    ipam:
+#      driver: default
+#      config:
+#        - subnet: 10.2.0.0/24
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_USER: todo_user
+      DB_PASS: todo_pass
+      DB_NAME: todo_db
+#    networks:
+#      private_network:
+#        ipv4_address: 10.2.0.100
+
+  db:
+    image: mysql:8.0
+    container_name: todo-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todo_db
+      MYSQL_USER: todo_user
+      MYSQL_PASSWORD: todo_pass
+#    ports:
+#      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./todo.sql:/docker-entrypoint-initdb.d/todo.sql
+#    networks:
+#      private_network:
+#        ipv4_address: 10.2.0.101
+
+volumes:
+  db_data:
