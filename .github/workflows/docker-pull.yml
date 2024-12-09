@@ -45,6 +45,7 @@ jobs:
         password: ${{ secrets.SERVER_PASSWORD }}
         port: ${{ secrets.SERVER_PORT }}
         script: |
+          cd /opt/
           docker pull ${{ secrets.DOCKER_USERNAME }}/devops-project-test:latest
           docker-compose down
           docker-compose up -d
