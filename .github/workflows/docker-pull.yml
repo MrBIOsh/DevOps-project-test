@@ -1,10 +1,10 @@
 # GitHub Actions CI/CD Workflow
 name: Docker Build and Deploy
 
-on:
-  push:
-    branches:
-      - main
+on: workflow_dispatch
+#  push:
+#    branches:
+#      - main
 
 jobs:
   build:
