@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wg-easy
+  labels:
+    app: wg-easy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wg-easy
+  template:
+    metadata:
+      labels:
+        app: wg-easy
+    spec:
+      containers:
+        - name: wg-easy
+          image: weejewel/wg-easy
+          env:
+            - name: WG_HOST
+              value: "vpn.example.com"
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wg-secrets
+                  key: password
+            - name: WG_PORT
+              value: "51820"
+            - name: WG_DEFAULT_ADDRESS
+              value: "10.13.13.1"
+          ports:
+            - containerPort: 51820
+              name: wg-port
+              protocol: UDP
+            - containerPort: 51821
+              name: http-port
+              protocol: TCP
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN"]
