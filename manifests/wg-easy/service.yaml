@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wg-easy
+spec:
+  selector:
+    app: wg-easy
+  ports:
+    - protocol: UDP
+      port: 51820
+      targetPort: 51820
+      name: wg-port
+    - protocol: TCP
+      port: 51821
+      targetPort: 51821
+      name: http-port
+  type: NodePort
